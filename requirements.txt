@@ -1,0 +1,28 @@
+# AI / LLM
+google-genai>=1.0.0
+openai>=1.0.0
+
+# NotebookLM (unofficial Python client)
+notebooklm-py
+
+# Web framework
+fastapi>=0.111.0
+uvicorn[standard]>=0.30.0
+
+# Async HTTP
+aiohttp>=3.9.0
+
+# Async SQLite
+aiosqlite>=0.20.0
+
+# Scheduler
+apscheduler>=3.10.0
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# Pydantic (bundled with FastAPI but pin for clarity)
+pydantic>=2.0.0
+
+# Static files serving
+aiofiles>=23.0.0
