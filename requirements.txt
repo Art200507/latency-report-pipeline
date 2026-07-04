@@ -11,6 +11,7 @@ uvicorn[standard]>=0.30.0
 
 # Async HTTP
 aiohttp>=3.9.0
+certifi>=2024.0.0
 
 # Async SQLite
 aiosqlite>=0.20.0
