@@ -4,6 +4,7 @@ openai>=1.0.0
 
 # NotebookLM (unofficial Python client)
 notebooklm-py
+playwright>=1.40.0
 
 # Web framework
 fastapi>=0.111.0
