@@ -256,7 +256,7 @@ export default function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ count: 1 }),
-      }).then(r => r.json())
+      }).then(async r => { const data=await r.json(); if(!r.ok) throw new Error(data.detail || 'Unable to start pipeline'); return data; })
 
       if (res.status === 'already_running') {
         setRunMsg('Already running!')
@@ -293,7 +293,7 @@ export default function App() {
           )}
           <button
             onClick={handleRunNow}
-            disabled={running}
+            disabled title="Publishing requires an authenticated operator client"
             className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all ${
               running
                 ? 'bg-slate-600 text-slate-400 cursor-not-allowed'
@@ -305,7 +305,7 @@ export default function App() {
                 <span className="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full"/>
                 Running…
               </span>
-            ) : '▶ Run Now'}
+            ) : 'Read-only dashboard'}
           </button>
         </div>
       </header>

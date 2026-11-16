@@ -65,12 +65,15 @@ def run_server(port: int):
     @asynccontextmanager
     async def combined_lifespan(app):
         async with original_lifespan(app):
-            scheduler.start()
+            scheduler_enabled = os.getenv("ENABLE_SCHEDULER", "false").lower() == "true"
+            if scheduler_enabled:
+                scheduler.start()
             print("[Main] Scheduler started")
             try:
                 yield
             finally:
-                scheduler.shutdown()
+                if scheduler_enabled:
+                    scheduler.shutdown()
                 print("[Main] Scheduler stopped")
 
     app.router.lifespan_context = combined_lifespan

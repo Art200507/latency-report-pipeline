@@ -4,7 +4,8 @@ FastAPI REST API for the dashboard UI.
 All endpoints the frontend needs to display pipeline status.
 """
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi import FastAPI, HTTPException, BackgroundTasks, Depends
+from api.access import require_operator
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -98,7 +99,7 @@ class RunRequest(BaseModel):
 _running_jobs: dict[str, bool] = {}
 
 
-@app.post("/api/run")
+@app.post("/api/run", dependencies=[Depends(require_operator)])
 async def trigger_run(req: RunRequest, background_tasks: BackgroundTasks):
     """
     Manually trigger a pipeline run (or batch).
@@ -108,8 +109,9 @@ async def trigger_run(req: RunRequest, background_tasks: BackgroundTasks):
         return {"status": "already_running",
                 "message": "A pipeline run is already in progress."}
 
+    _running_jobs["pipeline"] = True
+
     async def _run():
-        _running_jobs["pipeline"] = True
         try:
             if req.count > 1:
                 await run_batch(n=min(req.count, 3), category=req.category)
